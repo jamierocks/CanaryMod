@@ -198,7 +198,8 @@ public class CanaryPlayer extends CanaryHuman implements Player {
             } else {
                 // This is a copy of the real player list already, no need to copy again (re: Collections.copy())
                 List<Player> receivers = Canary.getServer().getPlayerList();
-                defaultChatpattern.put("%name", getDisplayName()); // Safe to get name now
+                String dName = getDisplayName();
+                defaultChatpattern.put("%name", dName != null ? dName : getName());
                 defaultChatpattern.put("%message", out);
                 defaultChatpattern.put("%group",getGroup().getName());
                

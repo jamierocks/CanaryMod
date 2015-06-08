@@ -14,7 +14,7 @@ public class CanaryAttributeFactory implements AttributeFactory {
 
     CanaryAttributeFactory() {
         mappedGeneric = new HashMap<String, Attribute>();
-        mappedGeneric.put("generic.MaxHealth", SharedMonsterAttributes.a.getWrapper());
+        mappedGeneric.put("generic.maxHealth", SharedMonsterAttributes.a.getWrapper());
         mappedGeneric.put("generic.followRange", SharedMonsterAttributes.b.getWrapper());
         mappedGeneric.put("generic.knockbackResistance", SharedMonsterAttributes.c.getWrapper());
         mappedGeneric.put("generic.movementSpeed", SharedMonsterAttributes.d.getWrapper());

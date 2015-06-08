@@ -213,13 +213,13 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
         new GenericFutureListener[0]);
         this.a.k();
         Futures.getUnchecked(this.d.a(
-                        new Runnable() {
-                            public void run() {
-                                NetHandlerPlayServer.this.a.l();
-                            }
-                        }
-                )
-        );
+                                     new Runnable() {
+                                         public void run() {
+                                             NetHandlerPlayServer.this.a.l();
+                                         }
+                                     }
+                                     )
+                            );
     }
 
     public void a(C0CPacketInput c0cpacketinput) {
@@ -1373,12 +1373,14 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
         // CanaryMod: Custom Payload implementation!
         else if ("REGISTER".equals(c17packetcustompayload.a())) {
             try {
-                packetbuffer = new PacketBuffer(Unpooled.wrappedBuffer(c17packetcustompayload.b()));
-                String channel = packetbuffer.c(packetbuffer.readableBytes());
-                for (String chan : channel.split("\0")) {
-                    Canary.channels().registerClient(chan, this.serverHandler);
+                if (c17packetcustompayload.b() != null && c17packetcustompayload.b().readableBytes() >= 1) {
+                    packetbuffer = new PacketBuffer(Unpooled.wrappedBuffer(c17packetcustompayload.b()));
+                    String channel = packetbuffer.c(packetbuffer.readableBytes());
+                    for (String chan : channel.split("\0")) {
+                        Canary.channels().registerClient(chan, this.serverHandler);
+                    }
+                    Canary.log.info(String.format("Player '%s' registered Custom Payload on channel(s) '%s'", this.b.getPlayer().getName(), Arrays.toString(channel.split("\0"))));
                 }
-                Canary.log.info(String.format("Player '%s' registered Custom Payload on channel(s) '%s'", this.b.getPlayer().getName(), Arrays.toString(channel.split("\0"))));
             }
             catch (Exception ex) {
                 c.error("Error receiving 'C17PacketCustomPayload': " + ex.getMessage(), ex);
@@ -1386,10 +1388,12 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
         }
         else if ("UNREGISTER".equals(c17packetcustompayload.a())) {
             try {
-                packetbuffer = new PacketBuffer(Unpooled.wrappedBuffer(c17packetcustompayload.b()));
-                String channel = packetbuffer.c(packetbuffer.readableBytes());
-                Canary.channels().unregisterClient(channel, this.serverHandler);
-                Canary.log.info(String.format("Player '%s' unregistered Custom Payload on channel '%s'", this.b.getPlayer().getName(), channel));
+                if (c17packetcustompayload.b() != null && c17packetcustompayload.b().readableBytes() >= 1) {
+                    packetbuffer = new PacketBuffer(Unpooled.wrappedBuffer(c17packetcustompayload.b()));
+                    String channel = packetbuffer.c(packetbuffer.readableBytes());
+                    Canary.channels().unregisterClient(channel, this.serverHandler);
+                    Canary.log.info(String.format("Player '%s' unregistered Custom Payload on channel '%s'", this.b.getPlayer().getName(), channel));
+                }
             }
             catch (Exception ex) {
                 c.error("Error receiving 'C17PacketCustomPayload': " + ex.getMessage(), ex);
@@ -1397,7 +1401,9 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
         }
         else {
             try {
-                Canary.channels().sendCustomPayloadToListeners(c17packetcustompayload.a(), c17packetcustompayload.b().a(), this.b.getPlayer());
+                if (c17packetcustompayload.b() != null && c17packetcustompayload.b().readableBytes() >= 1) {
+                    Canary.channels().sendCustomPayloadToListeners(c17packetcustompayload.a(), c17packetcustompayload.b().a(), this.b.getPlayer());
+                }
             }
             catch (Exception ex) {
                 c.error("Error receiving 'C17PacketCustomPayload': " + ex.getMessage(), ex);

@@ -1,10 +1,8 @@
 package net.minecraft.entity;
 
 import net.canarymod.api.entity.vehicle.CanaryCommandBlockMinecart;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.server.CommandBlockLogic;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -42,7 +40,7 @@ public class EntityMinecartCommandBlock extends EntityMinecart {
 
         @Override
         public net.canarymod.api.CommandBlockLogic getReference() {
-            throw new UnsupportedOperationException("CommandBlockLogic.getReference() Not supported yet in EntityMinecartCommandBlock.");
+            return EntityMinecartCommandBlock.this.getCanaryCommandBlockMinecart();
         }
     };
     private int b = 0;
@@ -117,6 +115,10 @@ public class EntityMinecartCommandBlock extends EntityMinecart {
     // CanaryMod
     public CommandBlockLogic getLogic() {
         return this.a;
+    }
+
+    public CanaryCommandBlockMinecart getCanaryCommandBlockMinecart() {
+        return (CanaryCommandBlockMinecart) this.entity;
     }
     //
 }
